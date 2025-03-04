@@ -1,0 +1,13 @@
+class Solution {
+    public boolean checkPowersOfThree(int n) {
+        while (n > 0) {
+            if (n % 3 == 2) 
+            { 
+                return false;
+            }
+            n /= 3; 
+        }
+        return true;
+    }
+}
+//number divisible by 3 will produce 0,1,2 as remainder , 0 and 1 are power of 3 , but can't express 2 .
