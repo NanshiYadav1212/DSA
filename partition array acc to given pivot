@@ -1,0 +1,34 @@
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) {
+        ArrayList<Integer> small = new ArrayList<Integer>();
+        ArrayList<Integer> large = new ArrayList<Integer>();
+        int count =0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>pivot){
+                large.add(nums[i]);
+            }
+            else if(nums[i]<pivot){
+                small.add(nums[i]);
+            }
+            else{
+                count++;
+            }
+        }
+        ArrayList<Integer> ans = new ArrayList<>();
+        for(int i=0;i<small.size();i++){
+            ans.add(small.get(i));
+        }
+
+        for(int i=0;i<count;i++){
+            ans.add(pivot);
+        }
+   
+        for(int i=0;i<large.size();i++){
+            ans.add(large.get(i));
+        }
+        for(int i=0;i<nums.length;i++){
+            nums[i] = ans.get(i);
+        }
+        return nums;
+    }
+}
