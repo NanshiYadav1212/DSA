@@ -1,0 +1,41 @@
+class Solution {
+    boolean isPrime(int n) {
+        if (n < 2) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        
+        for (int i = 3; i * i <= n; i += 2) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    public int[] closestPrimes(int left, int right) {
+        List<Integer> primes = new ArrayList<>();
+        
+        // Collect primes in the given range
+        for (int i = left; i <= right; i++) {
+            if (isPrime(i)) {
+                primes.add(i);
+            }
+        }
+      
+        if (primes.size() < 2) 
+          return new int[]{-1, -1};
+
+        // Find closest prime pair
+        int minDiff = Integer.MAX_VALUE;
+        int[] ans = new int[2];
+
+        for (int j = 0; j < primes.size() - 1; j++) {
+            int diff = primes.get(j + 1) - primes.get(j);
+            if (diff < minDiff) {
+                minDiff = diff;
+                ans[0] = primes.get(j);
+                ans[1] = primes.get(j + 1);
+            }
+        }
+
+        return ans;
+    }
+}
