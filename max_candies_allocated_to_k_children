@@ -1,0 +1,35 @@
+class Solution {
+
+    public int maximumCandies(int[] candies, long k) {
+        // Find the maximum number of candies in any pile
+        int maxCandiesInPile = 0;
+        for (int i = 0; i < candies.length; i++) {
+            maxCandiesInPile = Math.max(maxCandiesInPile, candies[i]);
+        }
+
+        // Set the initial search range for binary search
+        int left = 0;
+        int right = maxCandiesInPile;
+        while (left < right) {
+            
+            int middle = (left + right + 1) / 2;
+            if (canAllocateCandies(candies, k, middle)){
+                left = middle;
+            } 
+            else {
+                right = middle - 1;
+            }
+        }
+
+        return left;
+    }
+
+    boolean canAllocateCandies(int[] candies,long k, int nCandies) {
+        long mx = 0;
+        for (int i = 0; i< candies.length; i++) {
+            mx += candies[i] / nCandies;
+        }
+
+        return mx >= k;
+    }
+}
