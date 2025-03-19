@@ -1,0 +1,23 @@
+class Solution {
+
+    public int minOperations(int[] nums) {
+        Deque<Integer> q = new ArrayDeque<>();
+        int c = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            while (!q.isEmpty() && i > q.peekFirst() + 2) {
+                q.pollFirst();
+            }
+
+            if ((nums[i] + q.size()) % 2 == 0) {
+                if (i + 2 >= nums.length) {
+                    return -1;
+                }
+                c++;
+                q.offerLast(i);
+            }
+        }
+
+        return c;
+    }
+}
