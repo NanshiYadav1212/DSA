@@ -1,0 +1,63 @@
+class Solution {
+    int[] p;
+    int[] d;
+
+    public int[] minimumCost(int n, int[][] edges, int[][] queries) {
+        p = new int[n];
+        for (int i = 0; i < n; i++)
+         p[i] = -1;
+
+        d = new int[n];
+        int[] componentCost = new int[n];
+        for (int i = 0; i < n; i++) 
+        {
+            componentCost[i] = Integer.MAX_VALUE;
+        }
+        for (int[] edge : edges) 
+        {
+            union(edge[0], edge[1]);
+        }
+        for (int[] edge : edges)
+        {
+            int root = find(edge[0]);
+            componentCost[root] &= edge[2];
+        }
+        int[] answer = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int u = queries[i][0];
+            int v = queries[i][1];
+            if (find(u) != find(v)) {
+                answer[i] = -1;
+            } 
+           else {
+                int root = find(u);
+                answer[i] = componentCost[root];
+            }
+        }
+        return answer;
+    }
+    int find(int node) {
+        if (p[node] == -1) 
+        return node;
+        return p[node] = find(p[node]);
+    }
+
+
+    void union(int node1, int node2) {
+        int root1 = find(node1);
+        int root2 = find(node2);
+        if (root1 == root2)
+        return;
+        if (d[root1] < d[root2]) 
+        {
+            int temp = root1;
+            root1 = root2;
+            root2 = temp;
+        }
+        p[root2] = root1;
+        if (d[root1] == d[root2]) 
+        {
+            d[root1]++;
+        }
+    }
+}
