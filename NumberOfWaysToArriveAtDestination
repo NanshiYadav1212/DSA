@@ -1,0 +1,54 @@
+class Solution {
+
+    public int countPaths(int n, int[][] roads) {
+        final int MOD = 1_000_000_007;
+        List<List<int[]>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] r : roads) 
+        {
+            int u = r[0],v = r[1], travelTime = r[2];
+            graph.get(u).add(new int[] {v, travelTime });
+            graph.get(v).add(new int[] {u, travelTime });
+        }
+        PriorityQueue<long[]> minHeap = new PriorityQueue<>(
+            Comparator.comparingLong(a -> a[0])
+        );
+
+        long[] shortestTime = new long[n];
+        Arrays.fill(shortestTime, Long.MAX_VALUE);
+        int[] pathCount = new int[n];
+
+        shortestTime[0] = 0; // Distance to source is 0
+        pathCount[0] = 1; // 1 way to reach node 0
+
+        minHeap.offer(new long[] { 0, 0 }); // {time, node}
+
+        while (!minHeap.isEmpty()) {
+            long[] top = minHeap.poll();
+            long currTime = top[0]; 
+            int currNode = (int) top[1];
+            if (currTime > shortestTime[currNode]) 
+            {
+                continue;
+            }
+            for (int[] neighbor : graph.get(currNode)) {
+                int neighborNode = neighbor[0], roadTime = neighbor[1];
+                if (currTime + roadTime < shortestTime[neighborNode]) {
+                    shortestTime[neighborNode] = currTime + roadTime;
+                    pathCount[neighborNode] = pathCount[currNode];
+                    minHeap.offer(
+                        new long[] { shortestTime[neighborNode], neighborNode }
+                    );
+                }
+                else if (currTime + roadTime == shortestTime[neighborNode]) {
+                    pathCount[neighborNode] =
+                        (pathCount[neighborNode] + pathCount[currNode]) % MOD;
+                }
+            }
+        }
+
+        return pathCount[n - 1];
+    }
+}
