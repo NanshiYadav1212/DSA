@@ -1,0 +1,23 @@
+class Solution {
+    public int countDays(int days, int[][] meetings) {
+        Arrays.sort(meetings,(m1,m2) -> Integer.compare(m1[0],m2[0]));
+        int r = 0;
+        int u= -1,v= -1;
+
+        for (int[] meeting : meetings) {
+            if (meeting[0] >v) {
+                r += (v-u+ 1);
+                u = meeting[0];
+                v= meeting[1];
+            } 
+            else {
+                v = Math.max(v, meeting[1]);
+            }
+        }
+        if (v >=u) 
+        {
+            r += (v-u+1);
+        }
+        return days - r+1;
+    }
+}
