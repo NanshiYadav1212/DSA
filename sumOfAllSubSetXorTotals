@@ -1,0 +1,14 @@
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        return helper(nums, 0, 0); 
+    }
+    int helper(int[] nums, int index, int xor) {
+        if (index == nums.length) {
+            return xor;
+        }
+        int in= helper(nums, index + 1,xor^nums[index]);
+        int ex= helper(nums, index + 1,xor);
+
+        return in+ex;
+    }
+}
