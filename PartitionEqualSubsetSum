@@ -1,0 +1,30 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int totalSum = 0; 
+        // Step 1: Calculate total sum of the array
+        for (int num : nums) {
+            totalSum += num;
+        }
+        // Step 2: If the total sum is odd, return false
+        if (totalSum % 2 != 0) 
+        {
+            return false;
+        }
+        // Step 3: We want to find a subset with sum = totalSum / 2
+        int target = totalSum / 2;
+        // Step 4: DP array to track possible subset sums
+        boolean[] dp = new boolean[target + 1];
+        dp[0] = true;  // Base case: zero sum is always possible (empty subset)
+        // Step 5: Iterate over the elements in the array
+        for (int num : nums)
+        {
+            // Update the dp array from right to left
+            for (int j = target; j >= num; j--) 
+            {
+                dp[j] = dp[j] || dp[j - num];  // If dp[j - num] is true, dp[j] becomes true
+            }
+        }
+        // Step 6: Return if we can form a subset with sum = target
+        return dp[target];
+    }
+}
